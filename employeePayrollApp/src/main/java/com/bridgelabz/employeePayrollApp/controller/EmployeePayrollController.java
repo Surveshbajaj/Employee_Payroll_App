@@ -1,18 +1,30 @@
 package com.bridgelabz.employeePayrollApp.controller;
 
-import com.bridgelabz.employeePayrollApp.model.EmployeeModel;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/employee")
 public class EmployeePayrollController {
-    //UC-01
-    @GetMapping("/welcome")
-    public String welcomeMessage(){
-        return "Welcome to the Employee payroll app";
+
+    @GetMapping("/get/{id}")
+    public String getEmployeeById(@PathVariable Long id) {
+        return "Fetching employee with ID: " + id;
     }
-    @PostMapping("/add")
-    public EmployeeModel addEmployee(@RequestBody EmployeeModel employeeModel) {
-        return employeeModel; //not storing in database yet
+
+    @PostMapping("/create")
+    public String createEmployee() {
+        return "Creating new employee!";
     }
+
+    @PutMapping("/update/{id}")
+    public String updateEmployee(@PathVariable Long id) {
+        return "Updating employee with ID: " + id;
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteEmployee(@PathVariable Long id) {
+        return "Deleting employee with ID: " + id;
+    }
+
+
 }
