@@ -1,6 +1,7 @@
 package com.bridgelabz.employeePayrollApp.controller;
 
 
+import com.bridgelabz.employeePayrollApp.DTO.EmployeeDTO;
 import com.bridgelabz.employeePayrollApp.model.EmployeeModel;
 import com.bridgelabz.employeePayrollApp.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,23 +21,24 @@ public class EmployeePayrollController {
     }
     //UC-04
     @PostMapping("/create")
-    public EmployeeModel createEmployee(@RequestParam String name, @RequestParam int salary) {
-        return employeeService.createEmployee(name, salary);
+    public EmployeeModel createEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        return employeeService.createEmployee(employeeDTO);
     }
 
-    @PutMapping("/update/{id}")
-    public String updateEmployee(@PathVariable Long id) {
-        return "Updating employee with ID: " + id;
+    @PutMapping("/update/{name}")
+    public EmployeeModel updateEmployee(@PathVariable String  name, @RequestBody EmployeeDTO employeeDTO) {
+        return employeeService.updateEmployee(name,employeeDTO);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public String deleteEmployee(@PathVariable Long id) {
-        return "Deleting employee with ID: " + id;
+    @DeleteMapping("/delete/{name}")
+    public String deleteEmployee(@PathVariable String name) {
+        boolean isDeleted = employeeService.deleteEmployee(name);
+        return isDeleted ? "Employee deleted successfully" : "Employee not found";
     }
 
     @GetMapping("/DTO/get/{name}/{salary}")
     public EmployeeModel getEmployee(@PathVariable String name, @PathVariable int salary) {
-        return new EmployeeModel(name,salary); // Returning employee details based on input
+        return new EmployeeModel(new EmployeeDTO(name, salary)); // Returning employee details based on input
     }
 
     //UC-05
