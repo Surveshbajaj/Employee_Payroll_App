@@ -6,6 +6,8 @@ import com.bridgelabz.employeePayrollApp.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/employee")
 public class EmployeePayrollController {
@@ -32,12 +34,15 @@ public class EmployeePayrollController {
         return "Deleting employee with ID: " + id;
     }
 
-
-
     @GetMapping("/DTO/get/{name}/{salary}")
     public EmployeeModel getEmployee(@PathVariable String name, @PathVariable int salary) {
         return new EmployeeModel(name,salary); // Returning employee details based on input
     }
 
+    //UC-05
+    @GetMapping("/all")
+    public List<EmployeeModel> getAllEmployees() {
+        return employeeService.getAllEmployees();
+    }
 
 }
