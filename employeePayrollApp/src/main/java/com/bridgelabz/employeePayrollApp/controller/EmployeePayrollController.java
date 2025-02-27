@@ -52,7 +52,8 @@ public class EmployeePayrollController {
         return new EmployeeModel(new EmployeeDTO(name, salary)); // Returning employee details based on input
     }
 
-    //UC-05
+
+//    UC-05
     @GetMapping("/all")
     public List<EmployeeModel> getAllEmployees() {
         log.info("Fetching all employees...");
@@ -63,4 +64,5 @@ public class EmployeePayrollController {
         employeeService.testLogging();
         return "Logging has been tested. Check logs for details.";
     }
+
 }
