@@ -81,11 +81,6 @@ public class EmployeePayrollController {
         return ResponseEntity.ok("Logging has been tested. Check logs for details.");
     }
 
-    // Get Employee from DTO
-    @GetMapping("/DTO/get/{name}/{salary}")
-    public ResponseEntity<EmployeeModel> getEmployee(@PathVariable String name, @PathVariable int salary) {
-        EmployeeModel employee = new EmployeeModel(new EmployeeDTO(name, salary));
-        return ResponseEntity.ok(employee);
-    }
+
 
 }
