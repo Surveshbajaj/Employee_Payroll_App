@@ -25,7 +25,7 @@ public class EmployeePayrollController {
     }
 
     @GetMapping("/get/{id}")
-    public ResponseEntity<String> getEmployeeById(@PathVariable Long id) {
+    public ResponseEntity<String> getEmployeeById(@PathVariable int id) {
         log.info("Fetching employee with ID: {}", id);
         return ResponseEntity.ok("Fetching employee with ID: " + id);
     }

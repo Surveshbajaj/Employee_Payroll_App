@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -20,6 +21,7 @@ public @Data class EmployeeModel {
    private String name;
     private double salary;
     private String gender;
+    private LocalDate startDate;
     private String note;
     private String profilePic;
     private List<String> department;
@@ -37,11 +39,12 @@ public @Data class EmployeeModel {
 //        this.gender = employeeDTO.getGender();
 //    }
 
-    public EmployeeModel(int id, String name, double salary, String gender, String note, String profilePic, List<String> department) {
+    public EmployeeModel(int id, String name, double salary, String gender, String note, LocalDate startDate, String profilePic, List<String> department) {
         this.id = id;
         this.name = name;
         this.salary = salary;
         this.gender = gender;
+        this.startDate = startDate;
         this.note = note;
         this.profilePic = profilePic;
         this.department = department;

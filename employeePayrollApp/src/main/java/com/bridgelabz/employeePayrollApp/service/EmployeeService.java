@@ -17,7 +17,7 @@ public class EmployeeService {
     //Add employee to the list
     List<EmployeeModel> employeeList = new ArrayList<>();
     public EmployeeModel createEmployee(EmployeeDTO employeeDTO){
-        EmployeeModel employee = new EmployeeModel(employeeDTO.getId(),employeeDTO.getName(),employeeDTO.getSalary(),employeeDTO.getGender(),employeeDTO.getNote(),employeeDTO.getProfilePic(),employeeDTO.getDepartment());
+        EmployeeModel employee = new EmployeeModel(employeeDTO.getId(),employeeDTO.getName(),employeeDTO.getSalary(),employeeDTO.getGender(),employeeDTO.getNote(), employeeDTO.getStartDate(),employeeDTO.getProfilePic(),employeeDTO.getDepartment());
         employeeList.add(employee);
         log.info("Employee Created: {} ", employee);
         return employee;
