@@ -3,7 +3,9 @@ package com.bridgelabz.employeePayrollApp.service;
 import com.bridgelabz.employeePayrollApp.DTO.EmployeeDTO;
 import com.bridgelabz.employeePayrollApp.exception.EmployeeNotFoundException;
 import com.bridgelabz.employeePayrollApp.model.EmployeeModel;
+import com.bridgelabz.employeePayrollApp.repository.EmployeeRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -12,46 +14,63 @@ import java.util.List;
 @Service
 @Slf4j
 public class EmployeeService {
+    private final EmployeeRepository employeeRepository;
 
+    @Autowired
+    public EmployeeService(EmployeeRepository employeeRepository){
+        this.employeeRepository = employeeRepository;
+    }
 
     //Add employee to the list
     List<EmployeeModel> employeeList = new ArrayList<>();
     public EmployeeModel createEmployee(EmployeeDTO employeeDTO){
         EmployeeModel employee = new EmployeeModel(employeeDTO.getId(),employeeDTO.getName(),employeeDTO.getSalary(),employeeDTO.getGender(),employeeDTO.getNote(), employeeDTO.getStartDate(),employeeDTO.getProfilePic(),employeeDTO.getDepartment());
         employeeList.add(employee);
-        log.info("Employee Created: {} ", employee);
-        return employee;
+        log.info("Creating a Employee With Name: {} ", employee.getName());
+        EmployeeModel savedEmployee = employeeRepository.save(employee);
+        log.info("Successfully a employee Created {}", employee);
+        return savedEmployee;
     }
-    //list of all the employee
-    public List<EmployeeModel> getAllEmployees(){
-        return employeeList;
+    //get by id
+    public EmployeeModel getEmployeeById(int id) {
+        log.debug("Searching for Employee By Id {}" , id);
+        // Return employee if found, otherwise return null
+        return employeeRepository.findById(id).orElse(null);
     }
-    // Update Employee
-    public EmployeeModel updateEmployee(String name, EmployeeDTO employeeDTO) {
-        log.info("Searching and updating the employee with name: {} and salary: {}", employeeDTO.getName(), employeeDTO.getSalary());
-        for (EmployeeModel employee : employeeList) {
-            if (employee.getName().equalsIgnoreCase(name)) {
-                employee.setName(employeeDTO.getName());
-                employee.setSalary(employeeDTO.getSalary());
-                return employee;
-            }
-        }
-        throw new EmployeeNotFoundException("Employee with ID " + name + " not found");
+    public List<EmployeeModel> getAllEmployees() {
+        // Return all employees in the list
+        return employeeRepository.findAll();
     }
+    public EmployeeModel updateEmployee(int id,  EmployeeDTO updatedEmployee) {
 
+        EmployeeModel employee = employeeRepository.findById(id).orElse(null);
+
+        if(employee != null) {
+            employee.setName(updatedEmployee.getName());
+            employee.setProfilePic(updatedEmployee.getProfilePic());
+            employee.setNote(updatedEmployee.getNote());
+            employee.setSalary(updatedEmployee.getSalary());
+            employee.setGender(updatedEmployee.getGender());
+            employee.setDepartment(updatedEmployee.getDepartment());
+            employee.setStartDate(updatedEmployee.getStartDate());
+            employeeRepository.save(employee);
+            log.info("Successfully Employee Details Updated ......");
+            return new EmployeeModel(updatedEmployee.getId(),updatedEmployee.getName(), updatedEmployee.getSalary(), updatedEmployee.getGender(), updatedEmployee.getNote(), updatedEmployee.getStartDate(), updatedEmployee.getProfilePic(), updatedEmployee.getDepartment());
+        }
+        // Return null if no matching employee is found
+        return null;
+   }
 
     // Delete Employee
-    public boolean deleteEmployee(String name) {
-        log.info("Searching and deleting the employee with name: {}", name);
-        boolean isDeleted = employeeList.removeIf(emp -> emp.getName().equalsIgnoreCase(name));
-        if(isDeleted){
-            log.info("Employee deleted successfully: {}", name);
-        }else{
-            log.error("Failed to delete Employee - Not Found: {}", name);
-            throw new EmployeeNotFoundException("Employee with ID " + name + " not found");
-
+    public boolean deleteEmployee(int id) {
+        log.debug("Deleting the Employee Whose id is {}" , id);
+        // Remove employee with the given ID
+        if((employeeRepository.existsById(id))) {
+            employeeRepository.deleteById(id);
+            return true;
         }
-        return isDeleted;
+        // return false for employee not found with given id
+        return false;
     }
 
     public void testLogging() {

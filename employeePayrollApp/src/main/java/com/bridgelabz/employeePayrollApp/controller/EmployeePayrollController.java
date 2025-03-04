@@ -38,14 +38,14 @@ public class EmployeePayrollController {
         return ResponseEntity.ok(employee);
     }
 
-    // Update Employee by Name
-    @PutMapping("/update/{name}")
-    public ResponseEntity<EmployeeModel> updateEmployee(@PathVariable String name,@Valid  @RequestBody EmployeeDTO employeeDTO) {
-        log.info("Updating Employee: {}", name);
-        EmployeeModel updatedEmployee = employeeService.updateEmployee(name, employeeDTO);
+//     Update Employee by id
+    @PutMapping("/update/{id}")
+    public ResponseEntity<EmployeeModel> updateEmployee(@PathVariable int id,@Valid  @RequestBody EmployeeDTO employeeDTO) {
+        log.info("Updating Employee: {}", id);
+        EmployeeModel updatedEmployee = employeeService.updateEmployee(id, employeeDTO);
 
         if (updatedEmployee == null) {
-            log.warn("Failed to update - Employee not found: {}", name);
+            log.warn("Failed to update - Employee not found: {}", id);
             return ResponseEntity.notFound().build();
         }
 
@@ -54,10 +54,10 @@ public class EmployeePayrollController {
     }
 
     // Delete Employee by Name
-    @DeleteMapping("/delete/{name}")
-    public ResponseEntity<String> deleteEmployee(@PathVariable String name) {
-        boolean isDeleted = employeeService.deleteEmployee(name);
-        log.info("Deleting Employee: {}, Success: {}", name, isDeleted);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteEmployee(@PathVariable int id) {
+        boolean isDeleted = employeeService.deleteEmployee(id);
+        log.info("Deleting Employee: {}, Success: {}", id, isDeleted);
 
         if (isDeleted) {
             return ResponseEntity.ok("Employee deleted successfully");
