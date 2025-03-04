@@ -7,6 +7,7 @@ import com.bridgelabz.employeePayrollApp.service.EmployeeService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,6 +73,14 @@ public class EmployeePayrollController {
         log.info("Fetching all employees...");
         List<EmployeeModel> employees = employeeService.getAllEmployees();
         return ResponseEntity.ok(employees);
+    }
+    @GetMapping("/department/{department}")
+    public ResponseEntity<List<EmployeeModel>> getEmployeeData(@PathVariable String department) {
+        List<EmployeeModel> empDataList = employeeService.getEmployeeByDepartment(department);
+        if (empDataList.isEmpty()) {
+            return ResponseEntity.noContent().build(); // 204 No Content if no employees found
+        }
+        return ResponseEntity.ok(empDataList); // 200 OK with the list of employees
     }
 
     // Test Logging
