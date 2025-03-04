@@ -23,7 +23,7 @@ public class EmployeePayrollController {
     public EmployeePayrollController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
-
+        
     @GetMapping("/get/{id}")
     public ResponseEntity<String> getEmployeeById(@PathVariable int id) {
         log.info("Fetching employee with ID: {}", id);
